@@ -40,6 +40,8 @@ df = pd.read_csv("alldata.csv")
 
 output_rows = []
 
+sequence_id = 1 
+
 for patient_index, row in df.iterrows():
     fhr = decode_hex_to_clean_int16(row["fhr1hex"])
     ua = decode_hex_to_clean_int16(row["uahex"])
@@ -55,12 +57,15 @@ for patient_index, row in df.iterrows():
 
         # Prepare data to append to Excel
         output_rows.append({
+            "sequence_id": sequence_id,
             "patient_no": patient_index + 1,
             "segment_no": seg_index,
             "fhr": str(fhr_seg.tolist()),
             "ua": str(ua_seg.tolist()),
             "afm": str(afm_seg.tolist())
         })
+
+        sequence_id += 1
 
 # Save to a single Excel file
 df_output = pd.DataFrame(output_rows)
